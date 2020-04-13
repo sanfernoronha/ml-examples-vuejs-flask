@@ -60,12 +60,20 @@
                 :rules="fileRules"
               >
                 <template v-slot:selection="{ index, text }">
-                  <v-chip v-if="index < 2" color="deep-purple accent-4" dark label small>{{ text }}</v-chip>
+                  <v-chip
+                    v-if="index < 2"
+                    color="deep-purple accent-4"
+                    dark
+                    label
+                    small
+                    >{{ text }}</v-chip
+                  >
 
                   <span
                     v-else-if="index === 2"
                     class="overline grey--text text--darken-3 mx-2"
-                  >+{{ files.length - 2 }} File(s)</span>
+                    >+{{ files.length - 2 }} File(s)</span
+                  >
                 </template>
               </v-file-input>
             </v-col>
@@ -74,7 +82,9 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" @click="reset()">Close</v-btn>
-          <v-btn color="blue darken-1" :disabled="!valid" @click="add()">Save</v-btn>
+          <v-btn color="blue darken-1" :disabled="!valid" @click="add()"
+            >Save</v-btn
+          >
         </v-card-actions>
       </v-form>
     </v-card>
@@ -83,6 +93,7 @@
 
 <script>
 // @ is an alias to /src
+import axios from "axios";
 
 export default {
   name: "Home",
@@ -109,14 +120,67 @@ export default {
   }),
   methods: {
     add() {
+      var formData = new FormData();
       if (this.select == "Linear Regression") {
-        console.log("Train linear");
+        formData.set("name", this.model_name);
+        formData.set("target", this.target);
+        formData.set("test_size", this.test_size / 100);
+        formData.set("dataset", this.files);
+        axios({
+          method: "post",
+          url: "/api/LinReg/",
+          data: formData,
+          config: { headers: { "Content-Type": "multipart/form-data" } }
+        })
+          .then(response => {
+            console.log(response.data.status);
+            console.log(response.data.rmse);
+          })
+          .catch(error => {
+            console.log(error);
+          });
       } else if (this.select == "Lasso Regression") {
-        console.log("Train Lasso");
+        formData.set("name", this.model_name);
+        axios({
+          method: "post",
+          url: "/api/Laso/",
+          data: formData,
+          config: { headers: { "Content-Type": "multipart/form-data" } }
+        })
+          .then(response => {
+            console.log(response.data.status);
+          })
+          .catch(error => {
+            console.log(error);
+          });
       } else if (this.select == "Ridge Regression") {
-        console.log("Train Ridge");
+        formData.set("name", this.model_name);
+        axios({
+          method: "post",
+          url: "/api/Ridge/",
+          data: formData,
+          config: { headers: { "Content-Type": "multipart/form-data" } }
+        })
+          .then(response => {
+            console.log(response.data.status);
+          })
+          .catch(error => {
+            console.log(error);
+          });
       } else if (this.select == "Bayesian Ridge Regression") {
-        console.log("Train Ridge");
+        formData.set("name", this.model_name);
+        axios({
+          method: "post",
+          url: "/api/BayReg/",
+          data: formData,
+          config: { headers: { "Content-Type": "multipart/form-data" } }
+        })
+          .then(response => {
+            console.log(response.data.status);
+          })
+          .catch(error => {
+            console.log(error);
+          });
       }
     },
     reset() {
