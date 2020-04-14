@@ -4,8 +4,9 @@ import App from "./App.vue";
 import router from "./router";
 import vuetify from "./plugins/vuetify";
 import axios from "axios";
+import VueAxios from "vue-cli-plugin-axios";
 
-Vue.use(axios);
+Vue.use(VueAxios, axios);
 Vue.config.productionTip = false;
 
 new Vue({
