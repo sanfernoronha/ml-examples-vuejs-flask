@@ -1,4 +1,4 @@
-Steps to run :rocket: : 
+Steps to run: 
 
 1) In the folder named "web-app" , run 
 
