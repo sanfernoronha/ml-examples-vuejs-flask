@@ -142,7 +142,8 @@ def test1():
         "residualpath": residualpath
     },
     "feature_names": features,
-    "model_path": modelpath
+    "model_path": modelpath,
+    
     
     }), 201
 
